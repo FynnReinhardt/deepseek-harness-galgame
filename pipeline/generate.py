@@ -130,10 +130,12 @@ def build_prompt(
     scene_en: str = "",
     pov: bool = False,
     simple_bg: bool = False,
+    anchor_limit: int = 0,
 ) -> tuple[str, str]:
     """组装 Anima 提示词：
-    质量词 + 角色身份(固定) + 服装(可换) + [pov, solo focus] + 场景
-    场景：优先用英文自然语言描述（--scene-en）；否则回退场景 tags（--desc 检索）。
+    质量词 + 角色身份(固定) + 服装(可换) + [pov, solo focus]
+    + 本地 danbooru 库检索的锚点 tag（--tag-count，NL 路径也参考向量库）
+    + 场景（英文自然语言优先；否则回退场景 tags）
     背景 tag 默认不加，仅 --simple-bg（场景不明确时）。
     """
     tag_parts = [QUALITY]
@@ -144,6 +146,9 @@ def build_prompt(
         tag_parts.append("pov, solo focus")
     if simple_bg:
         tag_parts.append(BG)
+    if anchor_limit > 0 and tags:
+        anchor = ", ".join(t["name"] for t in tags[:anchor_limit])
+        tag_parts.append(anchor)
     tags_str = ", ".join(p for p in tag_parts if p)
 
     scene_en = (scene_en or "").strip()
@@ -159,6 +164,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="端到端立绘生成（Anima 模型）")
     ap.add_argument("--desc", default=None, help="中文场景描述（用于 tagsearch；有 --scene-en 时可省）")
     ap.add_argument("--scene-en", default="", help="英文自然语言场景/动作描述（Anima 支持，替代动作类 tag）")
+    ap.add_argument("--tag-count", type=int, default=10, help="NL 路径下附加的本地 danbooru 库锚点 tag 数（0=关闭，纯 NL）")
     ap.add_argument("--pov", action="store_true", help="与主角互动视角：加 pov, solo focus")
     ap.add_argument("--simple-bg", action="store_true", help="场景不明确时加 simple background")
     ap.add_argument("--char", default=None, help="角色名（characters/ 下的角色卡，固定身份 tag）")
@@ -181,13 +187,15 @@ def main() -> int:
         print(f"[0/3] 角色卡: {card.name}  服装: {outfit_name}（可选: {card.list_outfits()}）")
         print(f"      固定身份tag: {card.identity_tags}")
 
+    # 本地向量化 danbooru 库检索：desc 或 scene-en 都参考（NL 路径取锚点 tag，desc 回退取场景 tag）
     tags = []
-    if args.desc:
-        print("[1/3] 语义检索 Danbooru tags（场景/道具）...")
+    query = args.desc or (args.scene_en.strip() if args.tag_count > 0 else None)
+    if query:
+        print("[1/3] 语义检索本地 Danbooru 库（向量）...")
         s = TagSearcher()
         tags = s.search(
-            args.desc,
-            limit=args.limit,
+            query,
+            limit=max(args.tag_count if args.scene_en else args.limit, 1),
             category=int(args.category) if args.category else None,
             show_nsfw=False,
         )
@@ -196,6 +204,7 @@ def main() -> int:
     prompt, negative = build_prompt(
         tags, card=card, outfit=args.outfit,
         scene_en=args.scene_en, pov=args.pov, simple_bg=args.simple_bg,
+        anchor_limit=(args.tag_count if args.scene_en else 0),
     )
     print("\n--- 提示词 ---")
     print(f"Prompt  : {prompt}")

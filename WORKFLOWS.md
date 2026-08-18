@@ -39,10 +39,13 @@ python characters/validate.py 龙娘      # 校验单张卡
 出图（`pipeline/generate.py`）遵循：
 
 ```
-质量词 + 角色身份tag(卡) + 服装tag(卡) + [pov, solo focus] + 英文自然语言场景描述
+质量词 + 角色身份tag(卡) + 服装tag(卡) + [pov, solo focus]
++ 本地 danbooru 库锚点 tag（--tag-count，默认 10）
++ 英文自然语言场景描述
 ```
 
 - 场景/动作/背景 → **英文自然语言一段**（`--scene-en`），不用动作类 tag
+- **本地向量化 danbooru 库始终参考**：NL 路径也会用 tagsearch 检索一批已验证的锚点 tag（道具/视觉元素）拼在 NL 前；`--tag-count 0` 可关闭（纯 NL）
 - 与主角互动 → `--pov`（加 pov, solo focus）；不互动不加
 - 背景 tag 默认不加（`--simple-bg` 仅在场景不明确时）
 - 负面词含防 Q 版：`chibi, deformed, oversized head, small head`

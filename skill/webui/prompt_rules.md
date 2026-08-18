@@ -8,6 +8,7 @@
 2. **场景/动作/背景一律用英文自然语言一段**（Anima 支持），**不用动作类 tag**
 3. **与"主角"互动时**：加 `pov, solo focus`；不互动时删去
 4. **背景 tag 默认不加**；只有场景不明确时才加 `simple background`
+5. **本地向量化 danbooru 库始终参考**：NL 路径也会经 tagsearch 检索一批锚点 tag 拼在 NL 前（防幻觉、锚定道具/视觉元素）
 
 ## 正面词结构（顺序固定）
 
@@ -16,6 +17,7 @@ masterpiece, best quality, anime coloring,
 <角色身份 tag（卡：角色tag + 体形 + 面部）>,
 <服装 tag（卡：outfit）>,
 [pov, solo focus]                      ← 与主角互动时
+<本地 danbooru 库锚点 tag（--tag-count，默认 10）>,
 <一段英文自然语言：场景 + 动作 + 背景 + 氛围>
 ```
 
