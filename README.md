@@ -37,7 +37,7 @@ git clone https://github.com/FynnReinhardt/deepseek-harness-galgame
 - Python 3.11+（numpy）
 - 向量服务：LM Studio（图形化界面）或 Ollama（更轻量，`ollama pull bge-m3`）
 - 绘画后端：**Forge Neo**。安装命令：`git clone https://github.com/Haoming02/sd-webui-forge-classic sd-webui-forge-neo --branch neo`；启动时需附加 `--api` 参数以开放图像生成 API。
-- 绘画模型（可选）：本工具**不强制要求**安装任何特定模型。您可依照个人偏好，在 [civitai.red](https://civitai.red/) 或 [Hugging Face](https://huggingface.co/) 中检索并选用合适的模型；如无特别偏好，建议采用基础版 Anima 模型——该类模型需配套 Qwen Text Encoder 与 Qwen VAE 文件，并将对应文件路径填写至 `config.json` 的 `anima_clip` / `anima_vae` 字段。下载地址见下方。
+- 绘画模型（可选）：本工具**不强制要求**安装任何特定模型。您可依照个人偏好，在 [civitai.red](https://civitai.red/) 或 [Hugging Face](https://huggingface.co/) 中检索并选用合适的模型；如无特别偏好，建议采用基础版 Anima 模型——该类模型需配套 Qwen Text Encoder 与 Qwen VAE 文件，并将对应文件路径填写至 `config.json` 的 `anima_text_encoder` / `anima_vae` 字段。下载地址见下方。
 
 #### Anima 模型下载（官方仓库 [circlestone-labs/Anima](https://huggingface.co/circlestone-labs/Anima)）
 
@@ -52,7 +52,7 @@ git clone https://github.com/FynnReinhardt/deepseek-harness-galgame
 **放置与配置**：
 - 检查点 → Forge Neo 的 `models/Stable-diffusion/`
 - Text Encoder → `models/text_encoder/`；VAE → `models/VAE/`
-- 将后两者的路径填入 `config.json` 的 `anima_clip` / `anima_vae`（Forge 经 `forge_additional_modules` 自动加载）
+- 将后两者的路径填入 `config.json` 的 `anima_text_encoder` / `anima_vae`（Forge 经 `forge_additional_modules` 自动加载）
 
 ## 数据来源声明
 

@@ -7,6 +7,6 @@
   "output_dir": "outputs/webui",
   "char_dir": "characters",
   "backend": "lmstudio",
-  "anima_clip": "",
+  "anima_text_encoder": "",
   "anima_vae": ""
 }

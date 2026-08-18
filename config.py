@@ -28,7 +28,7 @@ DEFAULTS = {
     "char_dir": "characters",
     "backend": "lmstudio",
     # Anima 模型配套（按本机实际路径填写）
-    "anima_clip": "",
+    "anima_text_encoder": "",
     "anima_vae": "",
 }
 

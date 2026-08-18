@@ -7,7 +7,7 @@ generate.py — 端到端立绘生成：自然语言描述 → Danbooru tags →
     中文/英文描述
       -> TagSearcher（tagsearch/index, LM Studio bge-m3 编码）
       -> Danbooru tag 列表
-      -> A1111 兼容 txt2img（Anima 模型 + Qwen CLIP/VAE override_settings）
+      -> A1111 兼容 txt2img（Anima 模型 + Qwen Text Encoder/VAE override_settings）
       -> PNG 保存到 outputs/webui/
 
 用法 :
@@ -51,25 +51,25 @@ NEGATIVE = (
     "chibi, deformed, oversized head, small head"
 )
 
-# ---- Anima 系模型：必须带 Qwen CLIP + VAE（Forge override_settings）----
-# clip/vae 路径来自 config.json（anima_clip/anima_vae）；为空时回退本机路径
-_CFG_CLIP = (_CFG.get("anima_clip") or "").strip()
+# ---- Anima 系模型：必须带 Qwen Text Encoder + VAE（Forge override_settings）----
+# text_encoder/vae 路径来自 config.json（anima_text_encoder/anima_vae）；为空时回退本机路径
+_CFG_TE = (_CFG.get("anima_text_encoder") or _CFG.get("anima_clip") or "").strip()
 _CFG_VAE = (_CFG.get("anima_vae") or "").strip()
 ANIMA_MODULES = {
     "molKeunMix_anima": {
-        "clip": _CFG_CLIP or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
+        "text_encoder": _CFG_TE or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
         "vae": _CFG_VAE or r"F:\sd-webui-forge-neo\models\VAE\qwen_image_vae.safetensors",
     },
     "uwumergeAnimaEditionCute_v50": {
-        "clip": _CFG_CLIP or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
+        "text_encoder": _CFG_TE or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
         "vae": _CFG_VAE or r"F:\sd-webui-forge-neo\models\VAE\qwen_image_vae.safetensors",
     },
     "uwumergeAnimaEditionCute_v40": {
-        "clip": _CFG_CLIP or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
+        "text_encoder": _CFG_TE or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
         "vae": _CFG_VAE or r"F:\sd-webui-forge-neo\models\VAE\qwen_image_vae.safetensors",
     },
     "dasiwaAnima_obsidianArchivesV2": {
-        "clip": _CFG_CLIP or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
+        "text_encoder": _CFG_TE or r"F:\sd-webui-forge-neo\models\text_encoder\qwen_3_06b_base.safetensors",
         "vae": _CFG_VAE or r"F:\sd-webui-forge-neo\models\VAE\qwen_image_vae.safetensors",
     },
 }
@@ -88,7 +88,7 @@ def txt2img_anima(
     seed: int = -1,
     timeout: int = 900,
 ) -> dict:
-    """调用 Forge Neo，Anima 模型必须带 Qwen CLIP/VAE override_settings。"""
+    """调用 Forge Neo，Anima 模型必须带 Qwen Text Encoder/VAE override_settings。"""
     mod = ANIMA_MODULES[model]
     payload = {
         "prompt": prompt,
@@ -103,7 +103,7 @@ def txt2img_anima(
         "n_iter": 1,
         "override_settings": {
             "sd_model_checkpoint": f"{model}.safetensors",
-            "forge_additional_modules": [mod["vae"], mod["clip"]],
+            "forge_additional_modules": [mod["vae"], mod["text_encoder"]],
         },
     }
     body = json.dumps(payload).encode("utf-8")
@@ -202,7 +202,7 @@ def main() -> int:
     print(f"Negative: {negative}")
     print(f"模型    : {args.model}  {args.size} {SIZES[args.size]}")
 
-    print(f"[2/3] Forge Neo 出图（{args.model} + Qwen CLIP/VAE）...")
+    print(f"[2/3] Forge Neo 出图（{args.model} + Qwen Text Encoder/VAE）...")
     t0 = time.time()
     img = txt2img_anima(prompt, negative, args.model, SIZES[args.size], seed=args.seed)
     print(f"      generated in {time.time() - t0:.0f}s")

@@ -29,7 +29,7 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host '[2/4] generating config.json'
 if (-not (Test-Path "$here\config.json")) {
   Copy-Item "$here\config.example.json" "$here\config.json"
-  Write-Host '     created config.json - edit if WebUI/embedding URLs or Anima CLIP/VAE paths differ, then re-run'
+  Write-Host '     created config.json - edit if WebUI/embedding URLs or Anima Text Encoder/VAE paths differ, then re-run'
 }
 
 # 3) env detect

@@ -35,7 +35,7 @@ python setup/detect_env.py
 |---|---|
 | **Python / numpy** | `pip install numpy`（镜像：`-i https://pypi.tuna.tsinghua.edu.cn/simple`） |
 | **绘画 WebUI（Forge Neo）** | 安装脚本：<br> `git clone https://github.com/Haoming02/sd-webui-forge-classic sd-webui-forge-neo --branch neo`<br> 启动参数加 `--api` |
-| **绘画模型（可选，不强装）** | 按用户喜好去 [civitai.red](https://civitai.red/) 与 [Hugging Face](https://huggingface.co/) 检索；**无特殊要求时下载基础版 Anima**（如 anima-base-1.0，在 HF/civitai.red 搜 "anima base"）。Anima 系需配套 Qwen CLIP（`qwen_3_06b_base.safetensors`）与 Qwen VAE（`qwen_image_vae.safetensors`），经 `override_settings.forge_additional_modules` 传入（见 `skill/webui/SKILL.md`） |
+| **绘画模型（可选，不强装）** | 按用户喜好去 [civitai.red](https://civitai.red/) 与 [Hugging Face](https://huggingface.co/) 检索；**无特殊要求时下载基础版 Anima**（如 anima-base-1.0，在 HF/civitai.red 搜 "anima base"）。Anima 系需配套 Qwen Text Encoder（`qwen_3_06b_base.safetensors`）与 Qwen VAE（`qwen_image_vae.safetensors`），经 `override_settings.forge_additional_modules` 传入（见 `skill/webui/SKILL.md`） |
 | **向量服务（LM Studio）** | 安装 LM Studio 并加载嵌入模型（`bge-m3` / `nomic-embed-text-v1.5`） |
 | **向量服务（无 LM Studio）** | **安装 Ollama（更轻量简单）**：<br> ① `winget install Ollama.Ollama`<br> ② `ollama pull bge-m3`<br> ③ `ollama serve`<br> ④ 改 `config.json`：`backend: "ollama"`、`embedding_url: "http://127.0.0.1:11434/v1/embeddings"`、`embedding_model: "bge-m3"` |
 

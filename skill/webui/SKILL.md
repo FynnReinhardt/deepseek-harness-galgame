@@ -25,7 +25,7 @@ python scripts/webui_client.py status
 本机有两类模型，加载方式完全不同：
 
 1. **XL 系**：`molKeunMix_deepcobalt`（光辉）——模型内嵌 VAE，`sd_vae` 保持 `Automatic`，直接 `switch` 即可使用。
-2. **Anima 系**：`molKeunMix_anima`、`uwumergeAnimaEditionCute_v40/v50`、`dasiwaAnima_obsidianArchivesV2`——**必须**配套 Qwen CLIP + Qwen VAE 才能出图：
+2. **Anima 系**：`molKeunMix_anima`、`uwumergeAnimaEditionCute_v40/v50`、`dasiwaAnima_obsidianArchivesV2`——**必须**配套 Qwen Text Encoder + Qwen VAE 才能出图：
    - CLIP：`models/text_encoder/qwen_3_06b_base.safetensors`
    - VAE：`models/VAE/qwen_image_vae.safetensors`
    - 通过 `override_settings` 的 `forge_additional_modules` 传入**完整路径**（与 Forge 内置 PiD 扩展同一机制）。
@@ -97,4 +97,4 @@ python scripts/webui_client.py interrupt
 
 - 只做**文生图**，不做图生图/ControlNet/超分工作流。
 - 不要擅自改固定参数规格；用户覆盖时以用户为准并在回复里注明。
-- Anima 系首次加载（含 Qwen CLIP + VAE）较慢属正常，可用 `progress` 看进度。
+- Anima 系首次加载（含 Qwen Text Encoder + VAE）较慢属正常，可用 `progress` 看进度。
