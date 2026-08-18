@@ -88,7 +88,7 @@ def main() -> int:
     print("-" * 60)
     problems = []
     if not lm_found and not ola_found:
-        problems.append("向量服务缺失：LM Studio 与 Ollama 都没有 → 推荐安装 Ollama（更轻量）：\n"
+        problems.append("向量服务缺失（LM Studio 与 Ollama 都没有）。二者选一即可，都未安装时推荐 Ollama（更轻量，纯命令行）：\n"
                         "    1) winget install Ollama.Ollama\n"
                         "    2) ollama pull bge-m3\n"
                         "    3) 运行 ollama serve，然后在 config.json 把 embedding_url 指向 http://127.0.0.1:11434/v1/embeddings、embedding_model 设为 bge-m3")
