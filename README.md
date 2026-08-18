@@ -1,5 +1,8 @@
 # AutoWebUI — 写小说/角色扮演自动生成立绘
 
+> **本工具是 [DeepSeek Harness](https://github.com/deepseek-ai/)（DSH）的扩展插件，依赖 DeepSeek Harness 运行。**
+> 写作/角色扮演/人格切换均在 DSH 会话中进行：由 DSH 读取角色卡性格进行扮演、调用 `set_persona` 切换 DSH 自身人格、按剧情检索设定库、并在对话中触发立绘生成。
+
 把"设定库 + 角色卡 + 本地绘画"串成一条流水线：RP 时按剧情检索设定、自动生成角色立绘、DSH 人格切换扮演。
 
 ## 快速开始
@@ -14,6 +17,8 @@
 # 3. 日常流程（角色卡/立绘规则/RP 参考/冒险历史归档/人格切换）
 详见 WORKFLOWS.md
 ```
+
+**环境部署提示**：向量模型（嵌入服务）与绘画后端（Forge Neo + 模型）的检测、安装与配置，均可交由 **DeepSeek Harness 协助完成**——在 DSH 会话中运行 `python setup/detect_env.py` 获取检测报告，DSH 会按报告引导补齐缺失组件（含 Ollama 轻量兜底方案）。
 
 ## 组件
 
