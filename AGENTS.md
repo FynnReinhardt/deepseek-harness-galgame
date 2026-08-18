@@ -19,8 +19,14 @@
    - `python characters/validate.py <角色名>` 校验；展示卡片、按用户意见修改后锁定
 
 4. **切换人格**（RP 开始 / 结束）
-   - 确认 `set_persona` 插件可用；RP 开始调用 `set_persona { action: "set", char: "<角色名>" }`，结束调用 `{ action: "clear" }`
+   - 使用第 5 步激活的 `set_persona` 工具；RP 开始调用 `set_persona { action: "set", char: "<角色名>" }`，结束调用 `{ action: "clear" }`
    - 立绘：`python pipeline/generate.py --char <角色名> --pov --scene-en "英文场景描述"`（后台运行，完成后告知图片路径）
+
+5. **改造 DSH（激活动态插件）**
+   - 本工具的立绘侧栏与人格切换依赖两个 DSH 动态 Cordis 插件（仅存在于会话进程，重启后需重新激活）：
+     - **立绘侧栏**（右侧展示立绘 + 会话头部"立绘"按钮）：读取 `plugins/standing-panel.host.js` 与 `plugins/standing-panel.client.js`，用 `cordis_define`（kind=new, idPrefix=stand）定义后 `cordis_run` 运行（Client 需用户批准）
+     - **人格切换**（`set_persona` 工具）：读取 `plugins/set-persona.host.js`，用 `cordis_define`（kind=new, idPrefix=pers）定义后 `cordis_run` 运行
+   - 详细步骤见 `plugins/README.md`；插件通过工作区 `config.json` 的 `output_dir` / `char_dir` 定位目录
 
 ## 日常流程
 
@@ -39,6 +45,7 @@
 | `tagsearch/` | Danbooru 语义标签搜索（自然语言 → 绘画 tag） |
 | `settings_rag/` | 向量化 / 检索 / 冒险历史归档 |
 | `pipeline/` | 立绘生成、RP 参考组装、角色卡解析 |
+| `plugins/` | DSH 动态插件源码（立绘侧栏 / 人格切换），供会话激活 |
 | `setup/` | 初始化系统：环境检测、工作区初始化、引导手册 |
 | `skill/webui/` | DSH 绘画技能（WebUI 调用与提示词规则） |
 | `config.json` | 环境配置（WebUI / 向量服务 / Anima 模型路径） |
