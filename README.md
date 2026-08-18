@@ -17,7 +17,7 @@ git clone https://github.com/FynnReinhardt/deepseek-harness-galgame
 #    定义与运行需要 cordis_define / cordis_run 工具），请在 DSH 中切换到创造模式后再开始。
 
 # 4. 告诉 DSH 开始初始化：它会读取 AGENTS.md 并自动执行
-#      环境检测与部署 → 导入设定库（你只需把素材放入 import/ 或提供路径）
+#      环境检测与部署 → 导入设定库（提供你喜欢的小说或者设定集的 txt 文档作为扮演的背景）
 #      → 建角色卡 → 部署插件（立绘侧栏/人格切换）→ 开始扮演
 #    详细步骤见 AGENTS.md；人工操作手册见 setup\README.md
 ```

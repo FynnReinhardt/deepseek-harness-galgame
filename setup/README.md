@@ -41,9 +41,9 @@ python setup/detect_env.py
 
 > 向量服务二选一即可：LM Studio 图形化、Ollama 命令行更轻。`config.json` 的 `embedding_url/model` 指向谁就用谁，脚本全部走 OpenAI 兼容 `/v1/embeddings`。
 
-## 第 3 步 · 导入设定集/小说并向量化（由 DSH 完成）
+## 第 3 步 · 导入设定库（由 DSH 完成）
 
-把素材（zip / txt / docx / pdf / html / epub）放进 `import/`（或在 DSH 会话中直接提供文件路径），然后告诉 DSH：「**素材已放好，导入设定库**」。
+提供你**喜欢的小说或设定集的 txt 文档**作为扮演的背景（放入 `import/` 或直接发内容/文件路径），然后告诉 DSH：「**导入设定库**」。
 
 DSH 会代为执行并汇报结果：
 
