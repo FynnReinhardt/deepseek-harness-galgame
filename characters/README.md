@@ -30,6 +30,19 @@ prompt = 质量词 + <角色tag> + <角色体形> + <角色面部> + <角色衣�
 - 场景 tags（动作/天气/构图）来自 tagsearch 语义检索，动态追加
 - 负面词固定模板
 
+## 特征 tag 生成（建卡时，参考本地 danbooru 库）
+
+生成 `角色体形 / 角色面部 / 角色衣服` 的特征 tag 时，**逐条用本地向量化 danbooru 库验证/取标准 tag**：
+
+```powershell
+python tagsearch/search.py "银白色长发" --limit 5   # → silver_hair, long_hair ...
+python tagsearch/search.py "水手服" --limit 5        # → serafuku ...
+python tagsearch/search.py "狐耳" --limit 5          # → fox_ears ...
+```
+
+- 每条特征都应有本地库命中的标准 tag（避免自造 / 幻觉 tag），出图时这些 tag 与场景检索同源、保持一致
+- 库中无对应 tag 的特殊特征：保留自定义写法并在卡中注明（或用 LoRA 兜底）
+
 ## RP 使用
 
 ```powershell

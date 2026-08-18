@@ -15,6 +15,7 @@
    - `python settings_rag/retrieve.py "<查询>" --topk 3` 验证召回，把示例结果汇报给用户
 
 3. **建角色卡**（用户描述角色，由你提取特征生成）
+   - **特征 tag 参考本地库**：生成 `角色体形/角色面部/角色衣服` 的 tag 时，逐条用 `python tagsearch/search.py "<特征描述>" --limit 5` 查本地向量化 danbooru 库取标准 tag（如"银白色长发"→ `silver_hair, long_hair`），避免自造/幻觉 tag；库中无对应时保留自定义写法并注明
    - 按 `characters/README.md` 格式生成 `characters/<角色名>.md`（角色名字 / tag / 体形 / 面部 / 衣服多套 / 性格）
    - `python characters/validate.py <角色名>` 校验；展示卡片、按用户意见修改后锁定
 
