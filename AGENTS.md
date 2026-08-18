@@ -6,11 +6,9 @@
 ## 初始化流程（新工作区首次打开时执行）
 
 1. **环境检测与部署**
-   - 运行 `python setup/detect_env.py`，按报告补齐缺失组件：
-     - Python / numpy：`pip install numpy`（镜像：`-i https://pypi.tuna.tsinghua.edu.cn/simple`）
-     - 向量服务（二选一）：LM Studio（图形化）或 **Ollama（更轻）**：`winget install Ollama.Ollama` → `ollama pull bge-m3` → `ollama serve`，并把 `config.json` 的 `backend/embedding_url/embedding_model` 指向它
-     - 绘画 WebUI（Forge Neo）：`git clone https://github.com/Haoming02/sd-webui-forge-classic sd-webui-forge-neo --branch neo`，启动加 `--api`；模型不强装，无特殊要求用基础版 Anima（配 Qwen Text Encoder+VAE，路径填入 `config.json` 的 `anima_text_encoder/anima_vae`）
-   - 若无 `config.json`：复制 `config.example.json` 为 `config.json`，按其提示修改
+   - 运行 `python setup/detect_env.py` 获取检测报告
+   - **完整环境需求与部署命令见 `ENVIRONMENT.md`**：Python/numpy、向量服务二选一（LM Studio / Ollama）、Forge Neo 安装、Anima 模型 + Text Encoder + VAE 下载地址、`config.json` 字段说明——按需安装补齐
+   - 若无 `config.json`：复制 `config.example.json` 为 `config.json`，按 `ENVIRONMENT.md` 第三节填写
 
 2. **导入设定库**（用户把素材放入 `import/` 或提供文件路径后，由你执行）
    - `python settings_rag/import_docs.py` → 整理为 md → `library/` → 自动重建向量索引
