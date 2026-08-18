@@ -41,18 +41,18 @@ python setup/detect_env.py
 
 > 向量服务二选一即可：LM Studio 图形化、Ollama 命令行更轻。`config.json` 的 `embedding_url/model` 指向谁就用谁，脚本全部走 OpenAI 兼容 `/v1/embeddings`。
 
-## 第 3 步 · 导入设定集/小说并向量化
+## 第 3 步 · 导入设定集/小说并向量化（由 DSH 完成）
+
+把素材（zip / txt / docx / pdf / html / epub）放进 `import/`（或在 DSH 会话中直接提供文件路径），然后告诉 DSH：「**素材已放好，导入设定库**」。
+
+DSH 会代为执行并汇报结果：
 
 ```powershell
-# 把素材（zip / txt / docx / pdf / html / epub）放进 import/ 后：
-python settings_rag/import_docs.py
-# → 整理为 md → library/ → 自动重建向量索引
+python settings_rag/import_docs.py            # 整理为 md → library/ → 自动重建向量索引
+python settings_rag/retrieve.py "某角色/某设定" --topk 3   # 验证召回
 ```
 
-验证：
-```powershell
-python settings_rag/retrieve.py "某角色/某设定" --topk 3
-```
+> 你无需手动运行命令；导入完成、向量库就绪后，DSH 会给出检索示例供你确认。
 
 ## 第 4 步 · 提取角色 + 切换人格
 

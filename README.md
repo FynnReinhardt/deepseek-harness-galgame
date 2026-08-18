@@ -11,8 +11,9 @@
 # 1. 一键安装（检测 python/numpy → 生成配置 → 环境检测 → 建标签索引）
 .\install.ps1
 
-# 2. 完整初始化引导（部署/环境/Ollama 兜底/导入/角色）
-详见 setup\README.md
+# 2. 导入设定集/小说（由 DSH 完成）：
+#    把素材放入 import/（或直接发给我），在 DSH 会话中说"导入设定库"，
+#    DSH 会自动完成 整理 → 向量化 → 验证召回。详见 setup\README.md
 
 # 3. 日常流程（角色卡/立绘规则/RP 参考/冒险历史归档/人格切换）
 详见 WORKFLOWS.md
