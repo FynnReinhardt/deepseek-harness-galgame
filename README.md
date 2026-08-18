@@ -12,13 +12,17 @@
 git clone https://github.com/FynnReinhardt/deepseek-harness-galgame
 
 # 2. 在 DeepSeek Harness 中把克隆目录作为工作区打开
-#    DSH 会读取本项目的 AGENTS.md 并按其中"初始化流程"自动执行：
+
+# 3. ⚠️ 切换到「创造模式」：初始化依赖 Cordis 动态插件能力（立绘侧栏、人格切换的
+#    定义与运行需要 cordis_define / cordis_run 工具），请在 DSH 中切换到创造模式后再开始。
+
+# 4. 告诉 DSH 开始初始化：它会读取 AGENTS.md 并自动执行
 #      环境检测与部署 → 导入设定库（你只需把素材放入 import/ 或提供路径）
-#      → 建角色卡 → 切换人格 → 开始扮演
+#      → 建角色卡 → 部署插件（立绘侧栏/人格切换）→ 开始扮演
 #    详细步骤见 AGENTS.md；人工操作手册见 setup\README.md
 ```
 
-**环境部署提示**：向量模型（嵌入服务）与绘画后端（Forge Neo + 模型）的检测、安装与配置，均可交由 **DeepSeek Harness 协助完成**——在 DSH 会话中运行 `python setup/detect_env.py` 获取检测报告，DSH 会按报告引导补齐缺失组件（含 Ollama 轻量兜底方案）。
+**环境部署提示**：向量模型（嵌入服务）与绘画后端（Forge Neo + 模型）的检测、安装与配置，均可交由 **DeepSeek Harness 协助完成**——在 DSH 会话中运行 `python setup/detect_env.py` 获取检测报告，DSH 会按报告引导补齐缺失组件（向量服务二者选一：LM Studio 或 Ollama，均未安装时推荐 Ollama）。
 
 ## 组件
 
