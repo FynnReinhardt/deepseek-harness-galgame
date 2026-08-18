@@ -9,6 +9,7 @@
    - 运行 `python setup/detect_env.py` 获取检测报告
    - **完整环境需求与部署命令见 `ENVIRONMENT.md`**：Python/numpy、向量服务二选一（LM Studio / Ollama）、Forge Neo 安装、Anima 模型 + Text Encoder + VAE 下载地址、`config.json` 字段说明——按需安装补齐
    - 若无 `config.json`：复制 `config.example.json` 为 `config.json`，按 `ENVIRONMENT.md` 第三节填写
+   - ⏱️ **首次初始化需建立 Danbooru 标签向量索引（约 15-20 分钟）**：运行 `python tagsearch/build_index.py`（数据源 `tagsearch/data/tags_enhanced.csv` 已随仓库分发，一次性重建，之后即开即用）；期间可并行进行导入设定库 / 建角色卡等步骤
 
 2. **导入设定库**（用户提供喜欢的小说或设定集的 txt 文档作为扮演背景后，由你执行）
    - 用户给出文档（放入 `import/` 或提供内容/路径）→ `python settings_rag/import_docs.py` → 整理为 md → `library/` → 自动重建向量索引

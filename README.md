@@ -24,6 +24,8 @@ git clone https://github.com/FynnReinhardt/deepseek-harness-galgame
 
 **环境部署提示**：向量模型（嵌入服务）与绘画后端（Forge Neo + 模型）的检测、安装与配置，均可交由 **DeepSeek Harness 协助完成**——在 DSH 会话中运行 `python setup/detect_env.py` 获取检测报告，DSH 会按报告引导补齐缺失组件（向量服务二者选一：LM Studio 或 Ollama，均未安装时推荐 Ollama）。
 
+> ⏱️ **首次初始化说明**：建立 Danbooru 标签向量索引需要 **15–20 分钟**（数据源已随仓库分发，初始化时由 `python tagsearch/build_index.py` 用本地向量服务一次性重建，之后即开即用）。第一次初始化请耐心等待；期间可先进行"导入设定库 / 建角色卡"等步骤。
+
 ## 组件
 
 | 目录 | 用途 |
