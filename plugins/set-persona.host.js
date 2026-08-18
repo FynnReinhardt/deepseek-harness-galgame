@@ -4,21 +4,21 @@ return {
     const sp = ctx.get('systemPrompt')
     if (fs === undefined || sp === undefined) return
 
-    // 从 config.json（工作区根）读 char_dir；失败回退 'characters'
+    // 部署时由 DSH 把 __WORKSPACE__ 替换为当前工作区绝对路径（如 E:\xxx\deepseek-harness-galgame）
+    const WORKSPACE = '__WORKSPACE__'
+
+    // 从 <工作区>/config.json 读 char_dir；失败回退 <工作区>/characters
     async function resolveCharPath(charName) {
-      let root = ''
+      let dir = WORKSPACE + '\\characters'
       try {
-        const sb = ctx.get('sandboxPolicy')
-        root = sb && sb.workspaceRoot ? String(sb.workspaceRoot).replace(/[\\/]+$/, '') : ''
-        const cfgFile = await fs.resolve((root ? root + '\\' : '') + 'config.json')
+        const cfgFile = await fs.resolve(WORKSPACE + '\\config.json')
         const cfg = JSON.parse(await fs.readText(cfgFile))
         if (cfg && cfg.char_dir) {
           const p = String(cfg.char_dir)
-          if (/^[a-zA-Z]:[\\/]/.test(p) || p.startsWith('/')) return fs.resolve(p + '\\' + charName + '.md')
-          return fs.resolve(root + '\\' + p.replace(/\//g, '\\') + '\\' + charName + '.md')
+          dir = (/^[a-zA-Z]:[\\/]/.test(p) || p.startsWith('/')) ? p : WORKSPACE + '\\' + p.replace(/\//g, '\\')
         }
       } catch (e) { /* config.json 缺失时用默认 */ }
-      return fs.resolve(root + '\\characters\\' + charName + '.md')
+      return fs.resolve(dir.replace(/[\\/]+$/, '') + '\\' + charName + '.md')
     }
 
     let currentDisposer = null

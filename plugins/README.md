@@ -3,6 +3,11 @@
 本目录存放两个 **DeepSeek Harness 动态 Cordis 插件**的源码，供新工作区的 DSH 会话定义并运行。
 （动态插件只存在于会话进程内，重启后需重新定义——因此源码随仓库分发。）
 
+## 前提
+
+- 会话需具备 **`cordis_define` / `cordis_run` 工具**（Cordis 动态插件能力）。
+  若当前会话没有这两个工具，说明未挂载 Cordis 工具能力——需在支持动态插件的 DSH 会话中操作。
+
 ## 插件列表
 
 | 文件 | 插件（建议 idPrefix） | 作用 |
@@ -12,15 +17,16 @@
 
 ## 激活步骤（在 DSH 会话内执行）
 
-1. 用 read 工具读取对应 `.js` 文件（内容即 `code.host` / `code.client` 的函数体）
-2. `cordis_define`：
+1. **替换占位符**（关键）：用 edit 工具把两个 host 文件里的 `__WORKSPACE__` 替换为**当前工作区的绝对路径**（如 `E:\xxx\deepseek-harness-galgame`）。插件据此读取 `<工作区>/config.json` 的 `output_dir` / `char_dir` 定位目录。
+2. 用 read 工具读取对应 `.js` 文件（内容即 `code.host` / `code.client` 的函数体）。
+3. `cordis_define`：
    - **立绘侧栏**：`plugin: { kind: "new", idPrefix: "stand" }`；`code.host` = `standing-panel.host.js` 内容，`code.client` = `standing-panel.client.js` 内容
    - **人格切换**：`plugin: { kind: "new", idPrefix: "pers" }`；`code.host` = `set-persona.host.js` 内容（无 Client）
-3. `cordis_run` 运行对应 Package（Client 部分需用户在界面批准）
-4. 验证：右侧出现立绘面板（会话头部有"立绘"按钮）；工具列表出现 `set_persona`
+4. `cordis_run` 运行对应 Package（Client 部分需用户在界面批准）。
+5. 验证：右侧出现立绘面板（会话头部有"立绘"按钮）；工具列表出现 `set_persona`。
 
 ## 路径说明
 
-- 插件通过工作区根的 `config.json` 定位目录：立绘侧栏读 `output_dir`，人格切换读 `char_dir`
-- 基准路径取自 `sandboxPolicy.workspaceRoot`；读不到 `config.json` 时回退相对路径（`outputs/webui` / `characters`）
-- 若部署目录特殊，可在定义前用 edit 修改文件中的回退路径常量
+- 插件运行时只依赖**定义时写入的工作区绝对路径** + 该工作区 `config.json` 的 `output_dir` / `char_dir`（配置项为绝对路径则直接用，相对路径则拼在工作区下）
+- `config.json` 缺失时回退 `<工作区>/outputs/webui` / `<工作区>/characters`
+- 不要依赖会话工作区推断（`sandboxPolicy.workspaceRoot` 绑定会话而非仓库位置）

@@ -23,10 +23,11 @@
    - 立绘：`python pipeline/generate.py --char <角色名> --pov --scene-en "英文场景描述"`（后台运行，完成后告知图片路径）
 
 5. **改造 DSH（激活动态插件）**
-   - 本工具的立绘侧栏与人格切换依赖两个 DSH 动态 Cordis 插件（仅存在于会话进程，重启后需重新激活）：
-     - **立绘侧栏**（右侧展示立绘 + 会话头部"立绘"按钮）：读取 `plugins/standing-panel.host.js` 与 `plugins/standing-panel.client.js`，用 `cordis_define`（kind=new, idPrefix=stand）定义后 `cordis_run` 运行（Client 需用户批准）
-     - **人格切换**（`set_persona` 工具）：读取 `plugins/set-persona.host.js`，用 `cordis_define`（kind=new, idPrefix=pers）定义后 `cordis_run` 运行
-   - 详细步骤见 `plugins/README.md`；插件通过工作区 `config.json` 的 `output_dir` / `char_dir` 定位目录
+   - **前提**：会话需具备 `cordis_define` / `cordis_run` 工具（Cordis 动态插件能力）；缺失时需在支持动态插件的 DSH 会话中操作。
+   - **占位符替换（关键）**：定义前用 edit 把 `plugins/*.host.js` 中的 `__WORKSPACE__` 替换为**当前工作区绝对路径**——插件据此读 `<工作区>/config.json` 的 `output_dir` / `char_dir`（不要依赖 `sandboxPolicy.workspaceRoot`，它绑定会话而非仓库位置）。
+   - **立绘侧栏**（右侧展示立绘 + 会话头部"立绘"按钮）：读取 `plugins/standing-panel.host.js` 与 `plugins/standing-panel.client.js`，用 `cordis_define`（kind=new, idPrefix=stand）定义后 `cordis_run` 运行（Client 需用户批准）
+   - **人格切换**（`set_persona` 工具）：读取 `plugins/set-persona.host.js`，用 `cordis_define`（kind=new, idPrefix=pers）定义后 `cordis_run` 运行
+   - 详细步骤见 `plugins/README.md`
 
 ## 日常流程
 

@@ -3,20 +3,21 @@ return {
     const fs = ctx.get('fs')
     if (fs === undefined) return
 
-    // 从 config.json（工作区根）读 output_dir；失败回退 'outputs/webui'
+    // 部署时由 DSH 把 __WORKSPACE__ 替换为当前工作区绝对路径（如 E:\xxx\deepseek-harness-galgame）
+    const WORKSPACE = '__WORKSPACE__'
+
+    // 从 <工作区>/config.json 读 output_dir；失败回退 <工作区>/outputs/webui
     async function resolveOutputDir() {
       try {
-        const sp = ctx.get('sandboxPolicy')
-        const root = sp && sp.workspaceRoot ? String(sp.workspaceRoot).replace(/[\\/]+$/, '') : ''
-        const cfgFile = await fs.resolve((root ? root + '\\' : '') + 'config.json')
+        const cfgFile = await fs.resolve(WORKSPACE + '\\config.json')
         const cfg = JSON.parse(await fs.readText(cfgFile))
         if (cfg && cfg.output_dir) {
           const p = String(cfg.output_dir)
           if (/^[a-zA-Z]:[\\/]/.test(p) || p.startsWith('/')) return p
-          return root ? root + '\\' + p.replace(/\//g, '\\') : p
+          return WORKSPACE + '\\' + p.replace(/\//g, '\\')
         }
       } catch (e) { /* config.json 缺失时用默认 */ }
-      return 'outputs/webui'
+      return WORKSPACE + '\\outputs\\webui'
     }
 
     const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
