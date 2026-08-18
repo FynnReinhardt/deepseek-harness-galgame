@@ -30,8 +30,10 @@
 ## 依赖（二选一向量服务 + 可选绘画）
 
 - Python 3.11+（numpy）
-- 向量服务：LM Studio（图形化）或 Ollama（更轻，`ollama pull bge-m3`）
-- 绘画：Forge Neo（`git clone https://github.com/Haoming02/sd-webui-forge-classic sd-webui-forge-neo --branch neo`，加 `--api` 启动）
-  模型不强装：按喜好去 civitai.red / Hugging Face 检索；无特殊要求用基础版 Anima（需配 Qwen CLIP+VAE，路径填进 config.json）
+- 向量服务：LM Studio（图形化界面）或 Ollama（更轻量，`ollama pull bge-m3`）
+- 绘画后端：**Forge Neo**。安装命令：`git clone https://github.com/Haoming02/sd-webui-forge-classic sd-webui-forge-neo --branch neo`；启动时需附加 `--api` 参数以开放图像生成 API。
+- 绘画模型（可选）：本工具**不强制要求**安装任何特定模型。您可依照个人偏好，在 [civitai.red](https://civitai.red/) 或 [Hugging Face](https://huggingface.co/) 中检索并选用合适的模型；如无特别偏好，建议采用基础版 Anima 模型——该类模型需配套 Qwen CLIP 与 Qwen VAE 文件，并将对应文件路径填写至 `config.json` 的 `anima_clip` / `anima_vae` 字段。
 
-> 第三方数据版权见 NOTICE.md。
+## 数据来源声明
+
+本工具内置的 Danbooru 标签检索数据（`tagsearch/data/tags_enhanced.csv`）源自开源项目 [SAkizuki/DanbooruSearchOnlineDB](https://huggingface.co/datasets/SAkizuki/DanbooruSearchOnlineDB)（Hugging Face 数据集）及其配套仓库 [SuzumiyaAkizuki/DanbooruSearchOnline](https://github.com/SuzumiyaAkizuki/DanbooruSearchOnline)，按 **GPL-3.0** 许可分发。完整声明见 `NOTICE.md`。
