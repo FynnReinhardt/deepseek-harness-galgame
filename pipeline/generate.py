@@ -53,7 +53,7 @@ NEGATIVE = (
 
 # ---- Anima 系模型：必须带 Qwen Text Encoder + VAE（Forge override_settings）----
 # text_encoder/vae 路径来自 config.json（anima_text_encoder/anima_vae）；为空时回退本机路径
-_CFG_TE = (_CFG.get("anima_text_encoder") or _CFG.get("anima_clip") or "").strip()
+_CFG_TE = (_CFG.get("anima_text_encoder") or "").strip()
 _CFG_VAE = (_CFG.get("anima_vae") or "").strip()
 ANIMA_MODULES = {
     "molKeunMix_anima": {
