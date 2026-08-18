@@ -45,7 +45,9 @@ python characters/validate.py 龙娘      # 校验单张卡
 ```
 
 - 场景/动作/背景 → **英文自然语言一段**（`--scene-en`），不用动作类 tag
-- **本地向量化 danbooru 库始终参考**：NL 路径也会用 tagsearch 检索一批已验证的锚点 tag（道具/视觉元素）拼在 NL 前；`--tag-count 0` 可关闭（纯 NL）
+- **表情 → tag 库**（`--tags "blush, embarrassed"`，从本地 danbooru 库选，可多个）
+- **肢体动作 → 英文自然语言 + 最多 1-2 个 tag**
+- **本地向量化 danbooru 库始终参考**：无 `--tags` 时 NL 路径也会用 tagsearch 检索一批锚点 tag 拼在 NL 前；`--tag-count 0` 可关闭（纯 NL）
 - 与主角互动 → `--pov`（加 pov, solo focus）；不互动不加
 - 背景 tag 默认不加（`--simple-bg` 仅在场景不明确时）
 - 负面词含防 Q 版：`chibi, deformed, oversized head, small head`

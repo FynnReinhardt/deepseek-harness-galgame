@@ -131,11 +131,13 @@ def build_prompt(
     pov: bool = False,
     simple_bg: bool = False,
     anchor_limit: int = 0,
+    explicit_tags: list[str] | None = None,
 ) -> tuple[str, str]:
     """组装 Anima 提示词：
     质量词 + 角色身份(固定) + 服装(可换) + [pov, solo focus]
-    + 本地 danbooru 库检索的锚点 tag（--tag-count，NL 路径也参考向量库）
+    + tag 锚点（显式 --tags 优先：表情等；否则本地 danbooru 库检索 top-N）
     + 场景（英文自然语言优先；否则回退场景 tags）
+    规则：表情用 tag 库；肢体动作用自然语言 + 最多 1-2 个 tag。
     背景 tag 默认不加，仅 --simple-bg（场景不明确时）。
     """
     tag_parts = [QUALITY]
@@ -146,7 +148,9 @@ def build_prompt(
         tag_parts.append("pov, solo focus")
     if simple_bg:
         tag_parts.append(BG)
-    if anchor_limit > 0 and tags:
+    if explicit_tags:
+        tag_parts.append(", ".join(explicit_tags))
+    elif anchor_limit > 0 and tags:
         anchor = ", ".join(t["name"] for t in tags[:anchor_limit])
         tag_parts.append(anchor)
     tags_str = ", ".join(p for p in tag_parts if p)
@@ -163,8 +167,9 @@ def build_prompt(
 def main() -> int:
     ap = argparse.ArgumentParser(description="端到端立绘生成（Anima 模型）")
     ap.add_argument("--desc", default=None, help="中文场景描述（用于 tagsearch；有 --scene-en 时可省）")
-    ap.add_argument("--scene-en", default="", help="英文自然语言场景/动作描述（Anima 支持，替代动作类 tag）")
-    ap.add_argument("--tag-count", type=int, default=10, help="NL 路径下附加的本地 danbooru 库锚点 tag 数（0=关闭，纯 NL）")
+    ap.add_argument("--scene-en", default="", help="英文自然语言场景/动作描述（肢体动作用 NL + 1-2 tag）")
+    ap.add_argument("--tags", default="", help="显式 danbooru tag（表情等，从本地库选取），逗号分隔；优先于自动检索")
+    ap.add_argument("--tag-count", type=int, default=10, help="无 --tags 时，本地 danbooru 库检索的锚点 tag 数（0=关闭）")
     ap.add_argument("--pov", action="store_true", help="与主角互动视角：加 pov, solo focus")
     ap.add_argument("--simple-bg", action="store_true", help="场景不明确时加 simple background")
     ap.add_argument("--char", default=None, help="角色名（characters/ 下的角色卡，固定身份 tag）")
@@ -180,6 +185,8 @@ def main() -> int:
     if not args.desc and not args.scene_en.strip():
         ap.error("需要 --desc（中文场景）或 --scene-en（英文场景描述）至少一个")
 
+    explicit_tags = [t.strip() for t in args.tags.split(",") if t.strip()] if args.tags else []
+
     card = None
     if args.char:
         card = load_character(args.char)
@@ -187,9 +194,10 @@ def main() -> int:
         print(f"[0/3] 角色卡: {card.name}  服装: {outfit_name}（可选: {card.list_outfits()}）")
         print(f"      固定身份tag: {card.identity_tags}")
 
-    # 本地向量化 danbooru 库检索：desc 或 scene-en 都参考（NL 路径取锚点 tag，desc 回退取场景 tag）
+    # 本地向量化 danbooru 库检索（无显式 --tags 时）：desc 或 scene-en 都参考
     tags = []
-    query = args.desc or (args.scene_en.strip() if args.tag_count > 0 else None)
+    need_auto = not explicit_tags and (args.tag_count if args.scene_en else 1) > 0
+    query = args.desc or (args.scene_en.strip() if need_auto else None)
     if query:
         print("[1/3] 语义检索本地 Danbooru 库（向量）...")
         s = TagSearcher()
@@ -205,6 +213,7 @@ def main() -> int:
         tags, card=card, outfit=args.outfit,
         scene_en=args.scene_en, pov=args.pov, simple_bg=args.simple_bg,
         anchor_limit=(args.tag_count if args.scene_en else 0),
+        explicit_tags=explicit_tags,
     )
     print("\n--- 提示词 ---")
     print(f"Prompt  : {prompt}")

@@ -5,10 +5,11 @@
 ## 优先级（强制）
 
 1. **有角色卡**（`characters/<名>.md`）→ 身份 tag 直接取卡（角色tag/角色体形/角色面部），服装取 `--outfit`；**不再默认加 loli**，体形以卡为准
-2. **场景/动作/背景一律用英文自然语言一段**（Anima 支持），**不用动作类 tag**
-3. **与"主角"互动时**：加 `pov, solo focus`；不互动时删去
-4. **背景 tag 默认不加**；只有场景不明确时才加 `simple background`
-5. **本地向量化 danbooru 库始终参考**：NL 路径也会经 tagsearch 检索一批锚点 tag 拼在 NL 前（防幻觉、锚定道具/视觉元素）
+2. **表情 → 用 tag 库**（danbooru tag，如 `blush, embarrassed, nervous_smile`，可多个；经 `--tags` 显式传入或从本地库检索）
+3. **肢体动作 → 英文自然语言描述 + 最多 1-2 个 tag**；场景/背景同样走英文自然语言
+4. **与"主角"互动时**：加 `pov, solo focus`；不互动时删去
+5. **背景 tag 默认不加**；只有场景不明确时才加 `simple background`
+6. **本地向量化 danbooru 库始终参考**：无 `--tags` 时，NL 路径也经 tagsearch 检索锚点 tag 拼在 NL 前（防幻觉、锚定元素）
 
 ## 正面词结构（顺序固定）
 
@@ -17,13 +18,15 @@ masterpiece, best quality, anime coloring,
 <角色身份 tag（卡：角色tag + 体形 + 面部）>,
 <服装 tag（卡：outfit）>,
 [pov, solo focus]                      ← 与主角互动时
-<本地 danbooru 库锚点 tag（--tag-count，默认 10）>,
-<一段英文自然语言：场景 + 动作 + 背景 + 氛围>
+<表情 tag（--tags，从本地 danbooru 库选）>,
+[本地 danbooru 库锚点 tag（--tag-count，默认 10，无 --tags 时）],
+<一段英文自然语言：肢体动作 + 场景 + 背景 + 氛围>
 ```
 
 - 质量词固定最前；身份 tag 永远不变（一致性关键）
-- 英文描述示例：
-  `In a base cafeteria, she shyly holds up a spoonful of curry toward you, cheeks flushed, fox ears twitching, warm indoor lighting, blurred dining hall in the background`
+- 英文描述示例（肢体动作为主）：
+  `She leans forward at the cafeteria table, shyly lifts a spoonful of curry toward you, ears twitching as her tail sways`
+- 表情示例 tag：`blush, full-face_blush, embarrassed, nervous_smile, surprised, scared, open_mouth, worried, tears`（本地库可检索验证）
 - 场景不明确时才追加：`simple background, white background, negative space`
 
 ## 负面词模板
