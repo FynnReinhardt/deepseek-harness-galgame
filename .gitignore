@@ -1,0 +1,15 @@
+# 本机数据（不入库）
+config.json
+outputs/
+library/
+import/
+tagsearch/index/
+settings_rag/index/
+__pycache__/
+*.pyc
+.venv/
+.tmp/
+
+# 用户角色卡（只保留格式规范 README）
+characters/*.md
+!characters/README.md

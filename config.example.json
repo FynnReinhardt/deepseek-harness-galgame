@@ -1,0 +1,12 @@
+{
+  "webui_url": "http://127.0.0.1:7860",
+  "embedding_url": "http://127.0.0.1:1234/v1/embeddings",
+  "embedding_model": "text-embedding-bge-m3",
+  "llm_url": "http://127.0.0.1:1234/v1/chat/completions",
+  "llm_model": "",
+  "output_dir": "outputs/webui",
+  "char_dir": "characters",
+  "backend": "lmstudio",
+  "anima_clip": "",
+  "anima_vae": ""
+}
