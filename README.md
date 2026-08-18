@@ -8,15 +8,14 @@
 ## 快速开始
 
 ```powershell
-# 1. 一键安装（检测 python/numpy → 生成配置 → 环境检测 → 建标签索引）
-.\install.ps1
+# 1. 克隆项目
+git clone https://github.com/FynnReinhardt/deepseek-harness-galgame
 
-# 2. 导入设定集/小说（由 DSH 完成）：
-#    把素材放入 import/（或直接发给我），在 DSH 会话中说"导入设定库"，
-#    DSH 会自动完成 整理 → 向量化 → 验证召回。详见 setup\README.md
-
-# 3. 日常流程（角色卡/立绘规则/RP 参考/冒险历史归档/人格切换）
-详见 WORKFLOWS.md
+# 2. 在 DeepSeek Harness 中把克隆目录作为工作区打开
+#    DSH 会读取本项目的 AGENTS.md 并按其中"初始化流程"自动执行：
+#      环境检测与部署 → 导入设定库（你只需把素材放入 import/ 或提供路径）
+#      → 建角色卡 → 切换人格 → 开始扮演
+#    详细步骤见 AGENTS.md；人工操作手册见 setup\README.md
 ```
 
 **环境部署提示**：向量模型（嵌入服务）与绘画后端（Forge Neo + 模型）的检测、安装与配置，均可交由 **DeepSeek Harness 协助完成**——在 DSH 会话中运行 `python setup/detect_env.py` 获取检测报告，DSH 会按报告引导补齐缺失组件（含 Ollama 轻量兜底方案）。

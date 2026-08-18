@@ -7,14 +7,14 @@
 
 ## 第 1 步 · 部署到新工作区
 
-```powershell
-# 在目标目录（新工作区）初始化
-python setup/init_workspace.py --dir D:\my-novel-project
+**推荐方式**：把仓库克隆目录直接作为 DSH 工作区打开，由 DSH 按 `AGENTS.md` 初始化流程自动引导（环境检测 → 导入 → 建卡 → 切人格）。
 
-# 或指定向量后端/WebUI 地址
-python setup/init_workspace.py --dir D:\my-novel-project --backend ollama
-python setup/init_workspace.py --dir D:\my-novel-project --webui-url http://127.0.0.1:7860
+```powershell
+git clone https://github.com/FynnReinhardt/deepseek-harness-galgame
+# 然后在 DeepSeek Harness 中把该目录作为工作区打开
 ```
+
+**手动方式**（可选）：
 
 自动完成：
 - 创建目录：`characters/ settings/ novels/ import/ library/ outputs/webui/ tagsearch/data/`
